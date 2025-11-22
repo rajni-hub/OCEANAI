@@ -20,9 +20,14 @@ app = FastAPI(
 )
 
 # Configure CORS
+# Include Vercel frontend URL in allowed origins
+cors_origins = settings.CORS_ORIGINS.copy() if isinstance(settings.CORS_ORIGINS, list) else list(settings.CORS_ORIGINS)
+if "https://ocean-ai-seven.vercel.app" not in cors_origins:
+    cors_origins.append("https://ocean-ai-seven.vercel.app")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
