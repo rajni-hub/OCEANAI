@@ -1,0 +1,32 @@
+# FastAPI and Server
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Database
+sqlalchemy==2.0.23
+alembic==1.12.1
+psycopg2-binary==2.9.9
+
+# Authentication
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# AI/LLM
+google-generativeai==0.3.1
+
+# Document Generation
+python-docx==1.1.0
+python-pptx==0.6.23
+
+# Utilities
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# CORS is handled by FastAPI middleware
+# Note: uuid is built into Python, no need to install
+

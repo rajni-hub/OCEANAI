@@ -1,0 +1,198 @@
+.new-project-container {
+  min-height: calc(100vh - 60px);
+  padding: var(--space-2xl) var(--space-lg);
+  padding-top: 20px;
+  background: linear-gradient(
+    135deg,
+    #8bc8f2 0%,
+    #9bd8f7 20%,
+    #abe8fc 40%,
+    #b8f0ff 60%,
+    #c5f8ff 80%,
+    #d2ffff 100%
+  );
+  position: relative;
+  overflow-x: hidden;
+  /* Smooth transition for page navigation */
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+  transform: translateX(0);
+  opacity: 1;
+  /* Smooth slide-in animation from right on mount */
+  animation: slideInFromRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Slide right animation when navigating back to dashboard */
+.new-project-container.exiting {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.new-project-container > .container {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Line separator removed */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  margin-top: 0;
+  padding: 8px 0;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  height: auto;
+  min-height: 48px;
+  width: 100%;
+  flex-wrap: nowrap;
+  gap: var(--space-md);
+}
+
+.page-header > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.page-header p {
+  display: none;
+}
+
+.new-project-card {
+  max-width: 700px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  padding: var(--space-3xl);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.new-project-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    transparent 100%
+  );
+  opacity: 0.6;
+}
+
+.document-type-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.type-option {
+  padding: var(--space-xl);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  text-align: left;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.type-option:hover {
+  border-color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(74, 144, 226, 0.15);
+}
+
+.type-option.selected {
+  border-color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2),
+    0 8px 24px rgba(74, 144, 226, 0.2);
+}
+
+.type-option-icon {
+  font-size: 20px;
+  margin-bottom: var(--space-sm);
+  opacity: 0.6;
+}
+
+.type-option-label {
+  font-weight: var(--font-weight-medium);
+  color: #000000;
+  margin-bottom: var(--space-xs);
+  font-size: var(--font-size-sm);
+}
+
+.type-option-desc {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
+.form-actions {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-light);
+}
+
+@media (max-width: 768px) {
+  .document-type-selector {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+}
