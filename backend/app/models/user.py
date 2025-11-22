@@ -31,6 +31,7 @@ class User(Base):
     
     # Relationships
     projects = relationship("Project", back_populates="owner", cascade="all, delete-orphan")
+    templates = relationship("Template", back_populates="owner", cascade="all, delete-orphan")
     
     def __repr__(self):
         return f"<User(id={self.id}, email={self.email})>"
