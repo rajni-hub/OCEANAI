@@ -5,6 +5,7 @@ Fly.io offers a generous free tier with always-on services and global edge netwo
 ## ✅ Step 1: Install Fly CLI
 
 **macOS:**
+
 ```bash
 curl -L https://fly.io/install.sh | sh
 ```
@@ -12,6 +13,7 @@ curl -L https://fly.io/install.sh | sh
 **Or download from:** https://fly.io/docs/getting-started/installing-flyctl/
 
 **Verify installation:**
+
 ```bash
 flyctl version
 ```
@@ -39,6 +41,7 @@ flyctl launch
 ```
 
 This will:
+
 - Detect your Dockerfile
 - Ask for app name (or use default: `oceanai-backend`)
 - Ask for region (choose closest to you, e.g., `iad` for US East)
@@ -66,6 +69,7 @@ flyctl secrets set \
 ```
 
 **Optional - If you have Gemini API key:**
+
 ```bash
 flyctl secrets set GEMINI_API_KEY=your-gemini-key-here
 ```
@@ -77,6 +81,7 @@ flyctl deploy
 ```
 
 This will:
+
 - Build your Docker image
 - Push it to Fly.io
 - Deploy your app
@@ -84,9 +89,11 @@ This will:
 ## ✅ Step 7: Get Your URL
 
 After deployment, Fly.io will show you your app URL:
+
 - Example: `https://oceanai-backend.fly.dev`
 
 **Or check it:**
+
 ```bash
 flyctl status
 flyctl open
@@ -164,6 +171,7 @@ flyctl apps restart oceanai-backend
 ## 🐛 Troubleshooting
 
 **Build fails:**
+
 ```bash
 # Check build logs
 flyctl logs
@@ -173,6 +181,7 @@ flyctl deploy --no-cache
 ```
 
 **App won't start:**
+
 ```bash
 # Check logs
 flyctl logs
@@ -185,6 +194,7 @@ flyctl ssh console
 ```
 
 **Database issues:**
+
 - SQLite files are ephemeral on Fly.io
 - For production, consider Fly Postgres (free tier available)
 - Or use external database service
@@ -202,12 +212,13 @@ flyctl deploy
 ```
 
 Make it executable:
+
 ```bash
 chmod +x deploy.sh
 ```
 
 Then just run:
+
 ```bash
 ./deploy.sh
 ```
-
