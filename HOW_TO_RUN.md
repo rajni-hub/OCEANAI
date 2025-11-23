@@ -68,9 +68,12 @@ code .env  # if using VS Code
 
 **Add to .env:**
 ```env
-DATABASE_URL=sqlite:///./oceanai.db
+# For local development - use PostgreSQL or SQLite for testing
+DATABASE_URL=postgresql://user:password@localhost:5432/oceanai
+# Or for quick testing: DATABASE_URL=sqlite:///./oceanai.db
+
 SECRET_KEY=<paste-generated-key-here>
-GEMINI_API_KEY=  # Optional - add if you have it
+GEMINI_API_KEY=<your-gemini-api-key>  # Required for AI features - get from https://aistudio.google.com/apikey
 CORS_ORIGINS=["http://localhost:3000","http://localhost:5173"]
 ENVIRONMENT=development
 DEBUG=True
@@ -78,6 +81,10 @@ DEBUG=True
 
 **1.7 Create database tables:**
 ```bash
+# Run Alembic migrations (recommended)
+alembic upgrade head
+
+# Or create tables directly (alternative)
 python3 -c "from app.database import Base, engine; from app.models import user, project, document, refinement; Base.metadata.create_all(bind=engine); print('✅ Database tables created')"
 ```
 
@@ -328,13 +335,24 @@ node --version  # Should be 14+
 
 ### Database errors
 
-**Recreate database:**
+**For PostgreSQL:**
+```bash
+cd backend
+source venv/bin/activate
+# Reset migrations
+alembic downgrade base
+alembic upgrade head
+```
+
+**For SQLite (local testing only):**
 ```bash
 cd backend
 source venv/bin/activate
 rm -f oceanai.db  # Remove old database
 python3 -c "from app.database import Base, engine; from app.models import user, project, document, refinement; Base.metadata.create_all(bind=engine); print('✅ Database recreated')"
 ```
+
+**Note:** Production uses PostgreSQL on Railway, which is automatically configured.
 
 ---
 

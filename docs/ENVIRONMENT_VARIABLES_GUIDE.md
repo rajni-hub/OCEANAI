@@ -8,10 +8,10 @@ Complete guide for all required environment variables and secrets in the OCEAN A
 
 | Variable                      | Required      | Generate Yourself | Auto-Generated | Purpose                                                    |
 | ----------------------------- | ------------- | ----------------- | -------------- | ---------------------------------------------------------- |
-| `DATABASE_URL`                | ✅ Yes        | ✅ Yes            | ❌ No          | Database connection string                                 |
+| `DATABASE_URL`                | ✅ Yes        | ✅ Yes (local) / Railway (prod) | ✅ Railway auto-sets | Database connection string (PostgreSQL on Railway)        |
 | `SECRET_KEY`                  | ✅ Yes        | ✅ Yes            | ❌ No          | JWT token signing key                                      |
-| `GEMINI_API_KEY`              | ⚠️ Optional\* | ✅ Yes            | ❌ No          | Google Gemini API key                                      |
-| `CORS_ORIGINS`                | ⚠️ Optional   | ❌ No             | ✅ Yes         | Allowed frontend origins                                   |
+| `GEMINI_API_KEY`              | ✅ Required\* | ✅ Yes            | ❌ No          | Google Gemini API key (required for AI features)           |
+| `CORS_ORIGINS`                | ⚠️ Optional   | ❌ No             | ✅ Yes         | Allowed frontend origins (include Vercel URL for production) |
 | `ALGORITHM`                   | ⚠️ Optional   | ❌ No             | ✅ Yes         | JWT algorithm (default: HS256)                             |
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | ⚠️ Optional   | ❌ No             | ✅ Yes         | Token expiration (default: 30)                             |
 | `ENVIRONMENT`                 | ⚠️ Optional   | ❌ No             | ✅ Yes         | Environment name (default: development)                    |

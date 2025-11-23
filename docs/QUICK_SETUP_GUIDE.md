@@ -15,9 +15,12 @@
 
    ```bash
    cat > .env << 'EOF'
-   DATABASE_URL=sqlite:///./oceanai.db
+   # For local development - use PostgreSQL or SQLite for testing
+   DATABASE_URL=postgresql://user:password@localhost:5432/oceanai
+   # Or for quick testing: DATABASE_URL=sqlite:///./oceanai.db
+   
    SECRET_KEY=<paste-generated-key-here>
-   GEMINI_API_KEY=
+   GEMINI_API_KEY=<your-gemini-api-key>  # Required for AI features
    CORS_ORIGINS=["http://localhost:3000","http://localhost:5173"]
    ENVIRONMENT=development
    DEBUG=True
@@ -43,14 +46,15 @@ cd frontend
 ### ✅ REQUIRED (Must Set)
 
 1. **SECRET_KEY** - Generate yourself (see instructions above)
-2. **DATABASE_URL** - Use SQLite for dev: `sqlite:///./oceanai.db`
+2. **DATABASE_URL** - For local dev: PostgreSQL or SQLite (`sqlite:///./oceanai.db` for quick testing)
+   - **Production**: Automatically set by Railway PostgreSQL service
 
 ### ⚠️ OPTIONAL (But Recommended)
 
-3. **GEMINI_API_KEY** - Required for AI features only
-   - Get from: https://aistudio.google.com/app/apikey
-   - Without it: Auth, projects, export work fine
-   - Without it: Content generation, refinement won't work
+3. **GEMINI_API_KEY** - **Required** for AI features
+   - Get from: https://aistudio.google.com/apikey
+   - Required for: Content generation, refinement, AI template suggestions
+   - Must be set in Railway environment variables for production
 
 ### ✅ AUTO-GENERATED (Defaults Work)
 
@@ -68,8 +72,12 @@ cd frontend
 ### Backend `.env` (Minimum Required)
 
 ```env
-DATABASE_URL=sqlite:///./oceanai.db
+# Local development - PostgreSQL or SQLite
+DATABASE_URL=postgresql://user:password@localhost:5432/oceanai
+# Or: DATABASE_URL=sqlite:///./oceanai.db
+
 SECRET_KEY=<generate-using-command-above>
+GEMINI_API_KEY=<your-api-key>  # Required for AI features
 ```
 
 ### Frontend `.env` (Optional)

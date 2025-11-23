@@ -16,7 +16,7 @@ SECRET_KEY=<generated-key-here>
 
 ---
 
-### 2. GEMINI_API_KEY (Backend) - **OPTIONAL** (Required for AI features)
+### 2. GEMINI_API_KEY (Backend) - **REQUIRED** (for AI features)
 
 **Get from:** https://aistudio.google.com/app/apikey
 
@@ -31,21 +31,25 @@ SECRET_KEY=<generated-key-here>
 GEMINI_API_KEY=your-api-key-here
 ```
 
-**Note:** Without this, AI features (content generation, refinement) won't work, but everything else will.
+**Note:** Required for AI features (content generation, refinement, AI template suggestions).
 
 ---
 
 ### 3. DATABASE_URL (Backend) - **REQUIRED**
 
-**For Development (Easiest):**
+**For Local Development:**
 ```
+# PostgreSQL (recommended)
+DATABASE_URL=postgresql://user:password@localhost:5432/oceanai
+
+# Or SQLite for quick testing
 DATABASE_URL=sqlite:///./oceanai.db
 ```
 
-**For Production (PostgreSQL):**
-1. Install PostgreSQL
-2. Create database: `CREATE DATABASE oceanai;`
-3. Set: `DATABASE_URL=postgresql://user:password@localhost:5432/oceanai`
+**For Production (Railway):**
+- Railway automatically sets `DATABASE_URL` when you add a PostgreSQL service
+- No manual configuration needed
+- Go to Railway Dashboard → Add PostgreSQL → DATABASE_URL is auto-configured
 
 ---
 
@@ -57,7 +61,7 @@ These have defaults and work without setting:
 |----------|--------------|------------|
 | `ALGORITHM` | `HS256` | ✅ Yes |
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | `30` | ✅ Yes |
-| `CORS_ORIGINS` | `["http://localhost:3000","http://localhost:5173"]` | ✅ Yes |
+| `CORS_ORIGINS` | `["http://localhost:3000","http://localhost:5173"]` (dev) / `["https://ocean-ai-seven.vercel.app"]` (prod) | ✅ Yes |
 | `ENVIRONMENT` | `development` | ✅ Yes |
 | `DEBUG` | `True` | ✅ Yes |
 | `APP_NAME` | `AI Document Authoring Platform` | ✅ Yes |
@@ -67,11 +71,19 @@ These have defaults and work without setting:
 
 ## 📝 Minimal Setup (2 Variables)
 
-**Backend `.env` (Minimum):**
+**Backend `.env` (Minimum for Local Development):**
 ```env
-DATABASE_URL=sqlite:///./oceanai.db
+# PostgreSQL or SQLite for local testing
+DATABASE_URL=postgresql://user:password@localhost:5432/oceanai
+# Or: DATABASE_URL=sqlite:///./oceanai.db
+
 SECRET_KEY=<generate-using-command-above>
+GEMINI_API_KEY=<your-api-key>  # Required for AI features
 ```
+
+**Production (Railway):**
+- All environment variables set in Railway Dashboard
+- DATABASE_URL automatically provided by Railway PostgreSQL service
 
 **Frontend `.env` (Optional):**
 ```env

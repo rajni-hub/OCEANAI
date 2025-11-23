@@ -18,7 +18,7 @@ A full-stack web application for generating, refining, and exporting structured 
 ### Backend
 
 - **FastAPI** - Modern Python web framework
-- **SQLite/PostgreSQL** - Database (SQLite for development, PostgreSQL for production)
+- **PostgreSQL** - Production database (hosted on Railway)
 - **SQLAlchemy** - ORM for database operations
 - **Alembic** - Database migrations
 - **JWT** - Authentication tokens
@@ -26,6 +26,7 @@ A full-stack web application for generating, refining, and exporting structured 
 - **python-docx** - Word document generation
 - **python-pptx** - PowerPoint document generation
 - **Google Gemini API** - AI content generation
+- **Railway** - Backend hosting and deployment platform
 
 ### Frontend
 
@@ -33,6 +34,7 @@ A full-stack web application for generating, refining, and exporting structured 
 - **React Router** - Client-side routing
 - **Axios** - HTTP client
 - **Context API** - State management
+- **Vercel** - Frontend hosting and deployment platform
 
 ## 🏗️ Project Structure
 
@@ -73,8 +75,8 @@ OCEANAI/
 
 - Python 3.9+
 - Node.js 14+
-- SQLite (included with Python) or PostgreSQL 12+ (for production)
-- Google Gemini API Key (optional, for AI features)
+- PostgreSQL 12+ (for production - provided by Railway)
+- Google Gemini API Key (required for AI content generation features)
 
 ### Using Helper Scripts (Easiest)
 
@@ -122,17 +124,17 @@ cd backend
    Create a `.env` file in the `backend` directory:
 
    ```env
-   # For development (SQLite - no setup required)
-   DATABASE_URL=sqlite:///./oceanai.db
-
-   # For production (PostgreSQL - create database first)
-   # DATABASE_URL=postgresql://user:password@localhost:5432/oceanai
+   # For local development (use PostgreSQL or SQLite for testing)
+   DATABASE_URL=postgresql://user:password@localhost:5432/oceanai
+   # Or for quick local testing: DATABASE_URL=sqlite:///./oceanai.db
 
    SECRET_KEY=your-secret-key-here
    ALGORITHM=HS256
    ACCESS_TOKEN_EXPIRE_MINUTES=30
-   GEMINI_API_KEY=your-gemini-api-key  # Optional, for AI features
+   GEMINI_API_KEY=your-gemini-api-key  # Required for AI features
    CORS_ORIGINS=["http://localhost:3000"]
+   ENVIRONMENT=development
+   DEBUG=True
    ```
 
    **Quick setup:** Copy `.env.example` and generate a SECRET_KEY:
@@ -142,11 +144,9 @@ cd backend
    python3 -c "import secrets; print('SECRET_KEY=' + secrets.token_urlsafe(32))"
    ```
 
-5. **Run database migrations (optional for SQLite):**
+5. **Run database migrations:**
 
    ```bash
-   # For SQLite: Database is created automatically on first run
-   # For PostgreSQL: Run migrations
    alembic upgrade head
    ```
 
@@ -178,11 +178,15 @@ cd backend
    npm install
    ```
 
-3. **Create environment file (optional):**
+3. **Create environment file:**
    Create a `.env` file in the `frontend` directory:
 
    ```env
+   # For local development
    REACT_APP_API_URL=http://localhost:8000
+
+   # For production (points to Railway backend)
+   # REACT_APP_API_URL=https://your-backend.railway.app
    ```
 
 4. **Start the development server:**
@@ -383,11 +387,10 @@ alembic downgrade -1
 
 1. **Database connection error:**
 
-   - For SQLite: Check that the backend directory is writable
    - For PostgreSQL: Check PostgreSQL is running (`pg_isready`)
-   - Verify DATABASE_URL in .env file
-   - Run migrations: `alembic upgrade head` (optional for SQLite)
-   - For SQLite: Database file is created automatically on first run
+   - Verify DATABASE_URL in .env file (production uses Railway PostgreSQL)
+   - Run migrations: `alembic upgrade head`
+   - Check Railway dashboard for database connection string
 
 2. **Import errors:**
 
@@ -420,51 +423,100 @@ alembic downgrade -1
 ### Backend (.env)
 
 ```env
-# Development (SQLite - easiest setup)
-DATABASE_URL=sqlite:///./oceanai.db
+# Local Development
+DATABASE_URL=postgresql://user:password@localhost:5432/oceanai
+# Or for quick testing: DATABASE_URL=sqlite:///./oceanai.db
 
-# Production (PostgreSQL - requires database setup)
-# DATABASE_URL=postgresql://user:password@localhost:5432/oceanai
+# Production (Railway automatically provides DATABASE_URL)
+# DATABASE_URL is set automatically by Railway PostgreSQL service
 
 SECRET_KEY=your-secret-key-here  # Generate with: python3 -c "import secrets; print(secrets.token_urlsafe(32))"
 ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-GEMINI_API_KEY=your-gemini-api-key  # Optional, required for AI features
-CORS_ORIGINS=["http://localhost:3000"]
-APP_NAME=OCEAN AI Platform
+ACCESS_TOKEN_EXPIRE_MINUTES=60
+GEMINI_API_KEY=your-gemini-api-key  # Required for AI features - get from https://aistudio.google.com/apikey
+CORS_ORIGINS=["http://localhost:3000","https://ocean-ai-seven.vercel.app"]
 ENVIRONMENT=development
+DEBUG=True
 ```
 
 ### Frontend (.env)
 
 ```env
+# Local Development
 REACT_APP_API_URL=http://localhost:8000
+
+# Production (Vercel)
+# REACT_APP_API_URL=https://your-backend.railway.app
 ```
 
 ## 🚀 Deployment
 
-### Backend Deployment
+### Production Architecture
 
-1. Set production environment variables
-2. Run database migrations
-3. Use production WSGI server (e.g., Gunicorn with Uvicorn workers)
-4. Set up reverse proxy (Nginx)
-5. Configure SSL/TLS
+- **Frontend**: Deployed on **Vercel** (https://ocean-ai-seven.vercel.app)
+- **Backend**: Deployed on **Railway** (FastAPI with PostgreSQL)
+- **Database**: PostgreSQL hosted on Railway
+- **AI Service**: Google Gemini API
 
-### Frontend Deployment
+### Backend Deployment (Railway)
 
-1. Build production bundle:
+1. **Connect Repository:**
 
-   ```bash
-   cd frontend
-   npm run build
+   - Go to https://railway.app
+   - Login with GitHub
+   - New Project → Deploy from GitHub Repo
+   - Select your repository
+
+2. **Configure Service:**
+
+   - Set Root Directory: `/backend`
+   - Railway auto-detects Python from `requirements.txt` and `runtime.txt`
+   - Uses `Procfile` and `nixpacks.toml` for deployment
+
+3. **Add PostgreSQL Database:**
+
+   - Railway Dashboard → New → Database → PostgreSQL
+   - Railway automatically sets `DATABASE_URL` environment variable
+
+4. **Set Environment Variables:**
+
+   ```
+   SECRET_KEY=<generate-secret-key>
+   ALGORITHM=HS256
+   ACCESS_TOKEN_EXPIRE_MINUTES=60
+   GEMINI_API_KEY=<your-gemini-api-key>
+   CORS_ORIGINS=["https://ocean-ai-seven.vercel.app"]
+   ENVIRONMENT=production
+   DEBUG=false
    ```
 
-   This creates an optimized production build in the `build` folder.
+5. **Deploy:**
+   - Railway auto-deploys on every git push
+   - Get your backend URL from Railway dashboard
 
-2. Serve `build` folder with static file server (Nginx, Apache, etc.)
-3. Configure API URL for production in environment variables
-4. Set up reverse proxy if needed
+### Frontend Deployment (Vercel)
+
+1. **Connect Repository:**
+
+   - Go to https://vercel.com
+   - Import your GitHub repository
+   - Set Root Directory: `frontend`
+
+2. **Set Environment Variables:**
+
+   ```
+   REACT_APP_API_URL=https://your-backend.railway.app
+   ```
+
+3. **Deploy:**
+   - Vercel auto-deploys on every git push
+   - Your frontend will be live at a Vercel URL
+
+### Post-Deployment
+
+- Backend API: Available at Railway URL (e.g., `https://your-app.railway.app`)
+- Frontend: Available at Vercel URL (e.g., `https://ocean-ai-seven.vercel.app`)
+- API Docs: `https://your-backend.railway.app/api/docs`
 
 ## 📄 License
 
