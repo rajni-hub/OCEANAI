@@ -2,17 +2,17 @@
 python = "3.9"
 
 [phases.setup]
-nixPkgs = ["python39"]
+nixPkgs = ["python39", "python39Packages.pip"]
 
 [phases.install]
 cmds = [
-  "pip install --upgrade pip",
-  "pip install -r requirements.txt"
+  "python3 -m pip install --upgrade pip",
+  "python3 -m pip install -r requirements.txt"
 ]
 
 [phases.build]
 cmds = ["echo 'Build complete'"]
 
 [start]
-cmd = "python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+cmd = "python3 -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"
 
