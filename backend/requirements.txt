@@ -30,3 +30,4 @@ pydantic-settings==2.1.0
 # CORS is handled by FastAPI middleware
 # Note: uuid is built into Python, no need to install
 
+email-validator==2.1.0.post1
