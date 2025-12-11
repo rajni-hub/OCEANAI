@@ -505,7 +505,7 @@ REACT_APP_API_URL=http://localhost:8000
 2. **Set Environment Variables:**
 
    ```
-   REACT_APP_API_URL=https://your-backend.railway.app
+   REACT_APP_API_URL=https://web-production-065d1.up.railway.app/
    ```
 
 3. **Deploy:**
@@ -514,9 +514,9 @@ REACT_APP_API_URL=http://localhost:8000
 
 ### Post-Deployment
 
-- Backend API: Available at Railway URL (e.g., `https://your-app.railway.app`)
+- Backend API: Available at Railway URL (e.g., `https://web-production-065d1.up.railway.app/`)
 - Frontend: Available at Vercel URL (e.g., `https://ocean-ai-seven.vercel.app`)
-- API Docs: `https://your-backend.railway.app/api/docs`
+- API Docs: `https://web-production-065d1.up.railway.app/api/docs#/Authentication/register_api_auth_register_post`
 
 ## 📄 License
 

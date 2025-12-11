@@ -29,7 +29,6 @@ from app.services.ai_service import generate_template
 
 router = APIRouter()
 
-
 @router.post(
     "/{project_id}/configure",
     response_model=DocumentResponse,

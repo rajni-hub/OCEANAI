@@ -127,7 +127,7 @@ def create_user_token(user: User) -> dict:
     Returns:
         Dictionary with access_token and token_type
     """
-    access_token_expires = timedelta(minutes=30)
+    access_token_expires = timedelta(minutes=60)
     access_token = create_access_token(
         data={"sub": str(user.id), "email": user.email},
         expires_delta=access_token_expires
